@@ -7,7 +7,7 @@ $db = mysqli_connect("localhost", "root", "", "multi_login");
 // variable declaration
 $username = "";
 $email = "";
-$errors = array();
+$errors = [];
 
 //call the register() funtion if register_btn is clicked
 
@@ -43,7 +43,7 @@ function register()
     // Now if there are no errors in the form, registration will take place
     if (count($errors) == 0) {
         $password = md5($password_1); // this will encrypt the password before saving it in the database
-        if (isset($_POST["user_type]"])) {
+        if (isset($_POST["user_type"])) {
             $user_type = e($_POST["user_type"]);
             $query = "INSERT INTO users (username, email, user_type, password)
             VALUES('$username', '$email', '$user_type', '$password')";
