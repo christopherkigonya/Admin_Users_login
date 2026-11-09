@@ -1,4 +1,9 @@
-<?php include("functions.php") ?>
+<?php include("functions.php");
+
+if (isset($_POST['login_btn'])){
+    login();
+    }
+    ?>
 <!DOCTYPE html>
 <html>
     <head>

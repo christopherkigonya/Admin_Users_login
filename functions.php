@@ -29,16 +29,16 @@ function register()
 
     //form validation to ensure that every field is filled
     if (empty($username)) {
-        array_push($errors, "username is required Boss!");
+        $errors[] = "username is required Boss!";
     }
     if (empty($email)) {
-        array_push($errors, "So you want to live email field empty?!");
+        $errors[]= "So you want to live email field empty?!";
     }
     if (empty($password_1)) {
-        array_push($errors, "Atleast add something in the password field");
+        $errors[] = "Atleast add something in the password field";
     }
     if ($password_1 != $password_2) {
-        array_push($errors, "The passwords don't match Boss!");
+        $errors[] = "The passwords don't match Boss!";
     }
     // Now if there are no errors in the form, registration will take place
     if (count($errors) == 0) {
@@ -112,4 +112,38 @@ function logout()
         header("location: login.php");
     }
 }
+function login(){
+    global $db, $username, $errors; //this is to make access to variables outside the funcion
+    // grap form vlaues
+    $username = e($_POST['username']);
+    $password = e($_POST['password']);
+
+    if(empty($username)){
+        $errors[] = 'INSERT USERNAME BOSS!';
+    }
+    if(empty($password)){
+        $errors[] = 'Password is required BOSS!';
+    }
+    if(count($errors)==0){
+        $password =md5($password);
+        $query = 'SELECT * FROM users WHERE username="$username" AND password = "$password" LIMIT 1';
+        $results = mysqli_query($db,$query);
+        if(mysqli_num_rows($results) == 1){
+            // now user is found let's check if is admin
+            $logged_in_user = mysqli_fetch_assoc($results);
+        if($logged_in_user['user_type']=='admin'){
+                $_SESSION['user'] = $logged_in_user;
+                $_SESSION['success'] = "you are now logged in";
+                header("location: admin/home.php");
+            }else{
+                $_SESSION["user"] = $logged_in_user;
+                $_SESSION["success"] = "you are now logged in";
+                header("location: index.php");
+            }
+        }else{
+                $errors[] = "wrong username OR password combination";
+            }
+        }
+    }
+
 ?>
